@@ -82,39 +82,40 @@ void demoMode() {
     unsigned long color = colors[index];
     animationCode = (animationCode + 1) % NUM_ANIMATIONS;
 
-    animateSign( color, animationCode );
+    animateSign( color, animationCode, 4 );
 }
 
 /**
  *  Sends sign animations
  *  colors[] - array gives color for each letter.
  *  animationCode - a single animation for all letters.
+ *  duration - how long the animation will last
  *  pause - sets delay between animating each letter.
  */
-void animateSign( unsigned long colors[], int animationCode, int pause ) {
-  animateLetter( P_ADDRESS, colors[0], animationCode );
+void animateSign( unsigned long colors[], byte animationCode, byte duration, int pause ) {
+  animateLetter( P_ADDRESS, colors[0], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
-  animateLetter( R_ADDRESS, colors[1], animationCode );
+  animateLetter( R_ADDRESS, colors[1], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
-  animateLetter( O_ADDRESS, colors[2], animationCode );
+  animateLetter( O_ADDRESS, colors[2], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
-  animateLetter( N_ADDRESS, colors[3], animationCode );
+  animateLetter( N_ADDRESS, colors[3], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
-  animateLetter( K_ADDRESS, colors[4], animationCode );
+  animateLetter( K_ADDRESS, colors[4], animationCode, duration );
 }
 
 /**
  *  Sends sign animations
  *  sends all letters same, color and animation, simultaneously
  */
-void animateSign( unsigned long color, int animationCode) {
-	animateLetter( 0 , color, animationCode );
+void animateSign( unsigned long color, byte animationCode, byte duration) {
+	animateLetter( 0 , color, animationCode, duration );
 }
 
 /**
  *  Send animation command to individual letter controller
  */
-void animateLetter( int address, unsigned long color, int animationCode ) {
+void animateLetter( byte address, unsigned long color, byte animationCode, byte duration ) {
     Wire.beginTransmission(address);
 
     byte r = (color >> 16) & 0xFF;
@@ -125,6 +126,7 @@ void animateLetter( int address, unsigned long color, int animationCode ) {
     Wire.write(r);
     Wire.write(g);
     Wire.write(b);
+		Wire.write(duration);
 
     Wire.endTransmission();
 }

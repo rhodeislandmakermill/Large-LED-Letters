@@ -22,11 +22,12 @@ bool waiting;
 unsigned long lastCommandTime;  //Last time received a message from the main controller
 
 int shuffledLEDs[NUM_LEDS];
-int animationCode;
 
+int animationCode;
 CRGB leds[NUM_LEDS];
 CRGB currentColor;
 CRGB nextColor;
+unsigned long duration;
 
 volatile bool startAnimation;
 
@@ -60,8 +61,11 @@ void setup() {
 	animationCode = 0;
 	
 	startAnimation = false;
+	animationCode = 0;
 	currentColor = CRGB::Black;
 	nextColor = CRGB::White;
+	duration = 4000;
+	
 	fadeBetween( currentColor, nextColor, 3000 );
 	currentColor = nextColor;
 }
@@ -69,7 +73,7 @@ void setup() {
 
 void loop() {
 	if( startAnimation ) {
-		runAnimation( animationCode, currentColor, nextColor );
+		runAnimation( animationCode, currentColor, nextColor, duration );
 		currentColor = nextColor;
 		startAnimation = false;
 	} else {
@@ -82,7 +86,7 @@ void loop() {
 	// in 2 minutes set pixels to white.
 	if( millis() - lastCommandTime > 60000 * 2 && waiting ) {
 		nextColor = CRGB::White;
-		runAnimation( random(5), currentColor, nextColor );
+		runAnimation( random(5), currentColor, nextColor, duration );
 		currentColor = nextColor;
 		waiting = false;
 	}
@@ -92,28 +96,28 @@ void loop() {
 /**
  *  Run an animation and transition to a new color
  */
-void runAnimation( byte animation, CRGB current, CRGB next ) {
+void runAnimation( byte animation, CRGB current, CRGB next, unsigned long duration ) {
 	switch (animation) {
 	case 6:
-		juggle( 20000 );
+		juggle( duration );
 		break;
     case 5: 
-    	rainbow( 30000 );
+    	rainbow( duration );
     	break;
 	case 4:
-		sparkle( current, next, 4000 );
+		sparkle( current, next, duration );
 		break;
 	case 3: 
-		dance( current, next, 4000 );
+		dance( current, next, duration );
 		break;
 	case 2:
-		randomOn( current, next, 4000 );
+		randomOn( current, next, duration );
 		break;
 	case 1:
-		slide( current, next, 4000 );
+		slide( current, next, duration );
 		break;
 	default: 
-		fadeBetween( current, next, 3000 );
+		fadeBetween( current, next, duration );
 	}
 }
 
@@ -122,10 +126,11 @@ void runAnimation( byte animation, CRGB current, CRGB next ) {
  *  Receive commands from master controller
  */
 void receiveCommand(int howMany) {
-	animationCode = Wire.read();   // Animation command
-	byte r = Wire.read();   // Red channel
-	byte g = Wire.read();   // Green channel
-	byte b = Wire.read();   // Blue channel
+	animationCode = Wire.read();    // Animation command
+	byte r = Wire.read();           // Red channel
+	byte g = Wire.read();           // Green channel
+	byte b = Wire.read();           // Blue channel
+	duration = 1000 * Wire.read(); // Animation duration in seconds
 	
 	//Eat up extra bytes
 	while (0 < Wire.available()) {
@@ -162,7 +167,7 @@ void allBlack() {
  *  Juggle
  *  From FastLED demo code.
  */
-void juggle( int milliseconds  ) {
+void juggle( unsigned long milliseconds  ) {
 	int frameLength = 30;
 	int totalFrames = milliseconds / frameLength;
 	for( int frame = 0; frame < totalFrames; frame++ ) {
@@ -182,7 +187,7 @@ void juggle( int milliseconds  ) {
 /**
  *  Pulsing rainbow
  */
-void rainbow( int milliseconds ) {
+void rainbow( unsigned long milliseconds ) {
 	int frameLength = 30;
 	int totalFrames = milliseconds / frameLength;
 	int hueOffset = 2;
@@ -198,7 +203,7 @@ void rainbow( int milliseconds ) {
 /**
  *  Fade to endColor while randomly changing some pixels white.
  */
-void sparkle( CRGB startColor, CRGB endColor, int milliseconds ) {
+void sparkle( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
 	int frameLength = 30;
 	int totalFrames = milliseconds / frameLength;
 	for( int frame = 0; frame < totalFrames; frame++ ) {
@@ -218,7 +223,7 @@ void sparkle( CRGB startColor, CRGB endColor, int milliseconds ) {
  *  Randomly change from current color to new color until all colors are changed
  *  Random numbers are stored for efficient... necessary?
  */
-void randomOn( CRGB startColor, CRGB endColor, int milliseconds ) {
+void randomOn( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
 	int totalFrames = NUM_LEDS;
 	int frameLength = milliseconds / totalFrames;
 	for( int frame = 0; frame < totalFrames; frame++ ) {
@@ -233,7 +238,7 @@ void randomOn( CRGB startColor, CRGB endColor, int milliseconds ) {
 /**
  *  Dance between start and end color
  */
-void dance( CRGB startColor, CRGB endColor, int milliseconds ) {
+void dance( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
 	int frameLength = 60;
 	int totalFrames = milliseconds / frameLength;
 	
@@ -255,7 +260,7 @@ void dance( CRGB startColor, CRGB endColor, int milliseconds ) {
 /**
  *  Slide transition
  */
-void slide( CRGB startColor, CRGB endColor, int milliseconds ) {
+void slide( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
   int frameLength = 60;
   int totalFrames = milliseconds / frameLength;
   
@@ -279,7 +284,7 @@ void slide( CRGB startColor, CRGB endColor, int milliseconds ) {
 /**
  *  Fade between two colors in a given amount of milliseconds.
  */
-void fadeBetween( CRGB startColor, CRGB endColor, int milliseconds ) {
+void fadeBetween( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
 	int totalFrames = 255;
 	int frameLength = milliseconds / totalFrames;
 	for(int frame = 0; frame < 255; frame++) {
