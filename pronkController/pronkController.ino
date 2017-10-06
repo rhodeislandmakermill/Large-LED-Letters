@@ -64,8 +64,7 @@ void loop() {
 		  demoMode();
 		}
 		lastAnimation = millis();
-		delay(10000);
-	 }
+	}
 }
 
 /**
