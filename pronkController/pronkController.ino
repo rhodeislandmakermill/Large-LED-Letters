@@ -48,25 +48,34 @@ void loop() {
 }
 
 /**
- * Execute sign animations
+ *  Execute sign animations
+ *  colors[] - array gives color for each letter.
+ *  animationCode - a single animation for all letters.
+ *  pause - sets delay between animating each letter.
  */
-void animateSign( int animationCode ) {
-
+void animateSign( unsigned long colors[], int animationCode, int pause ) {
+  animateLetter( P_ADDRESS, colors[0], animationCode );
+  if( pause > 0 ) { delay(pause); }
+  animateLetter( R_ADDRESS, colors[1], animationCode );
+  if( pause > 0 ) { delay(pause); }
+  animateLetter( O_ADDRESS, colors[2], animationCode );
+  if( pause > 0 ) { delay(pause); }
+  animateLetter( N_ADDRESS, colors[3], animationCode );
+  if( pause > 0 ) { delay(pause); }
+  animateLetter( K_ADDRESS, colors[4], animationCode );
 }
 
 /**
- * Demo mode, rotates through colors and animations
+ *  Demo mode, rotates through colors and animations
+ *  Pause sets the time until next animation is run
  */
 void demoMode(int pause) {
     int index = random(8);
     unsigned long color = colors[index];
     animationCode = (animationCode + 1) % 5;
 
-    animateLetter( P_ADDRESS, color, animationCode );
-    animateLetter( R_ADDRESS, color, animationCode );
-    animateLetter( O_ADDRESS, color, animationCode );
-    animateLetter( N_ADDRESS, color, animationCode );
-    animateLetter( K_ADDRESS, color, animationCode );
+    unsigned long colors[] = {color, color, color, color, color};
+    animateSign( colors, animationCode, 0);
 
     delay(pause);
 }
