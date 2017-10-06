@@ -11,11 +11,11 @@
 
 #define NUM_LETTERS 5
 
-#define P_ADDRESS 1
-#define R_ADDRESS 2
-#define O_ADDRESS 3
-#define N_ADDRESS 4
-#define K_ADDRESS 5
+#define P_ADDRESS 10
+#define R_ADDRESS 11
+#define O_ADDRESS 12
+#define N_ADDRESS 13
+#define K_ADDRESS 14
 
 #define RED 0xFF0000
 #define ORANGE 0xFF8000
@@ -38,21 +38,24 @@ unsigned long lastAnimation;
 
 void setup() {
     mode = DEMO_MODE;
-    Wire.begin();
 		lastAnimation = 0;
 		pause = 10000;
+
+
+		Wire.begin();
 }
 
 void loop() {
 	//Wait between running animation
 	if( millis() - lastAnimation > pause ) {
 		if( mode == TWITTER_MODE ) {
-			twitterMode()
+			twitterMode();
 		} else {
 		  demoMode();
 		}
-		pause = millis();
-	}
+		lastAnimation = millis();
+		delay(10000);
+	 }
 }
 
 /**
@@ -70,8 +73,7 @@ void demoMode() {
     unsigned long color = colors[index];
     animationCode = (animationCode + 1) % 5;
 
-    unsigned long colors[] = {color, color, color, color, color};
-    animateSign( colors, animationCode, 0);
+    animateSign( color, animationCode );
 }
 
 /**
@@ -90,6 +92,14 @@ void animateSign( unsigned long colors[], int animationCode, int pause ) {
   animateLetter( N_ADDRESS, colors[3], animationCode );
   if( pause > 0 ) { delay(pause); }
   animateLetter( K_ADDRESS, colors[4], animationCode );
+}
+
+/**
+ *  Sends sign animations
+ *  sends all letters same, color and animation, simultaneously
+ */
+void animateSign( unsigned long color, int animationCode) {
+	animateLetter( 0 , color, animationCode );
 }
 
 /**

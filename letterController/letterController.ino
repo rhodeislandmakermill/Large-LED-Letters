@@ -12,7 +12,7 @@
 #include "FastLED.h"
 #include <Wire.h>
 
-#define ADDRESS 1 
+#define ADDRESS 10 
 #define NUM_LEDS 60
 
 #define PIXEL_PIN 3
@@ -32,9 +32,14 @@ volatile bool startAnimation;
 
 void setup() {  
 	//I2C setup	
+	pinMode( SDA, INPUT );
+	pinMode( SCL, INPUT );
+	digitalWrite( SDA, HIGH );
+	digitalWrite( SCL, HIGH );
 	Wire.begin(ADDRESS);              // join i2c bus with address #4
 	Wire.onReceive(receiveCommand);   // register receive event
 	Wire.onRequest(requestStatus);    // register request event
+	TWAR = (ADDRESS << 1) | 1;        // Enable broadcast messages to be received
 
 	//Fast LED setup
 	allBlack();
