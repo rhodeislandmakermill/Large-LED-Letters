@@ -32,23 +32,50 @@
 unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, BLUE, PINK, PURPLE, OSMM_TEAL};
 int mode;
 int animationCode;
+int pause;
+unsigned long lastAnimation;
 
 
 void setup() {
     mode = DEMO_MODE;
     Wire.begin();
+		lastAnimation = 0;
+		pause = 10000;
 }
 
 void loop() {
-    if( mode == TWITTER_MODE ) {
-
-    } else {
-       demoMode(10000);
-    }
+	//Wait between running animation
+	if( millis() - lastAnimation > pause ) {
+		if( mode == TWITTER_MODE ) {
+			twitterMode()
+		} else {
+		  demoMode();
+		}
+		pause = millis();
+	}
 }
 
 /**
- *  Execute sign animations
+ *  Twitter mode runs animations based on commands from the Internet
+ */
+void twitterMode() {
+
+}
+
+/**
+ *  Demo mode rotates through colors and animations
+ */
+void demoMode() {
+    int index = random(8);
+    unsigned long color = colors[index];
+    animationCode = (animationCode + 1) % 5;
+
+    unsigned long colors[] = {color, color, color, color, color};
+    animateSign( colors, animationCode, 0);
+}
+
+/**
+ *  Sends sign animations
  *  colors[] - array gives color for each letter.
  *  animationCode - a single animation for all letters.
  *  pause - sets delay between animating each letter.
@@ -63,21 +90,6 @@ void animateSign( unsigned long colors[], int animationCode, int pause ) {
   animateLetter( N_ADDRESS, colors[3], animationCode );
   if( pause > 0 ) { delay(pause); }
   animateLetter( K_ADDRESS, colors[4], animationCode );
-}
-
-/**
- *  Demo mode, rotates through colors and animations
- *  Pause sets the time until next animation is run
- */
-void demoMode(int pause) {
-    int index = random(8);
-    unsigned long color = colors[index];
-    animationCode = (animationCode + 1) % 5;
-
-    unsigned long colors[] = {color, color, color, color, color};
-    animateSign( colors, animationCode, 0);
-
-    delay(pause);
 }
 
 /**
