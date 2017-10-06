@@ -17,6 +17,16 @@
 #define N_ADDRESS 13
 #define K_ADDRESS 14
 
+#define NUM_ANIMATIONS 5
+
+#define FADE 0
+#define SLIDE 1
+#define RANDOM 2
+#define DANCE 3
+#define SPARKLE 4
+
+#define NUM_COLORS 8
+
 #define RED 0xFF0000
 #define ORANGE 0xFF8000
 #define YELLOW 0xFFFF00
@@ -69,9 +79,9 @@ void twitterMode() {
  *  Demo mode rotates through colors and animations
  */
 void demoMode() {
-    int index = random(8);
+    int index = random(NUM_COLORS);
     unsigned long color = colors[index];
-    animationCode = (animationCode + 1) % 5;
+    animationCode = (animationCode + 1) % NUM_ANIMATIONS;
 
     animateSign( color, animationCode );
 }
