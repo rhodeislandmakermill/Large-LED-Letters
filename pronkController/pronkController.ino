@@ -17,13 +17,15 @@
 #define N_ADDRESS 13
 #define K_ADDRESS 14
 
-#define NUM_ANIMATIONS 5
+#define NUM_ANIMATIONS 7
 
 #define FADE 0
 #define SLIDE 1
 #define RANDOM 2
 #define DANCE 3
 #define SPARKLE 4
+#define RAINBOW 5
+#define JUGGLE 6
 
 #define NUM_COLORS 8
 
@@ -45,12 +47,10 @@ int animationCode;
 int pause;
 unsigned long lastAnimation;
 
-
 void setup() {
     mode = DEMO_MODE;
 		lastAnimation = 0;
 		pause = 10000;
-
 
 		Wire.begin();
 }
