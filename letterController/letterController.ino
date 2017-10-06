@@ -39,7 +39,7 @@ void setup() {
 	Wire.begin(ADDRESS);              // join i2c bus with address #4
 	Wire.onReceive(receiveCommand);   // register receive event
 	Wire.onRequest(requestStatus);    // register request event
-	TWAR = (ADDRESS << 1) | 1;        // Enable broadcast messages to be received
+	TWAR = (ADDRESS << 1) | 1;     // Enable broadcast messages to be received
 
 	//Fast LED setup
 	allBlack();
@@ -75,7 +75,7 @@ void loop() {
 	} else {
 		fadeToward( currentColor, 64 );
 		FastLED.show();
-		delay(40);
+		delay(80);
 	}
 
 	// If haven't heard anything from main controller 
@@ -94,6 +94,12 @@ void loop() {
  */
 void runAnimation( byte animation, CRGB current, CRGB next ) {
 	switch (animation) {
+	case 6:
+		juggle( 20000 );
+		break;
+    case 5: 
+    	rainbow( 30000 );
+    	break;
 	case 4:
 		sparkle( current, next, 4000 );
 		break;
@@ -150,6 +156,43 @@ void allBlack() {
 	for(int i = 0; i < NUM_LEDS; i++) { 
 		leds[i] = CRGB::Black;
 	} 
+}
+
+/**
+ *  Juggle
+ *  From FastLED demo code.
+ */
+void juggle( int milliseconds  ) {
+	int frameLength = 30;
+	int totalFrames = milliseconds / frameLength;
+	for( int frame = 0; frame < totalFrames; frame++ ) {
+		// eight colored dots, weaving in and out of sync with each other
+		fadeToBlackBy( leds, NUM_LEDS, 20);
+		byte dothue = 0;
+		for( int i = 0; i < 8; i++) {
+			leds[beatsin16( i+7, 0, NUM_LEDS-1 )] |= CHSV(dothue, 200, 255);
+			dothue += 32;
+		}
+		FastLED.show();
+		delay(frameLength);
+	}
+}
+
+
+/**
+ *  Pulsing rainbow
+ */
+void rainbow( int milliseconds ) {
+	int frameLength = 30;
+	int totalFrames = milliseconds / frameLength;
+	int hueOffset = 2;
+	int hue = 0;
+	for( int frame = 0; frame < totalFrames; frame++ ) {
+		hue += hueOffset;
+		fill_rainbow( leds, NUM_LEDS, hue, 255 / NUM_LEDS );
+		FastLED.show();
+		delay(frameLength);
+	}	
 }
 
 /**
