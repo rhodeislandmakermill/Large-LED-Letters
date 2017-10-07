@@ -15,8 +15,8 @@
 #define ADDRESS 10 
 #define NUM_LEDS 60
 
-#define PIXEL_PIN 3
-#define BRIGHTNESS 95
+#define PIXEL_PIN 1
+#define BRIGHTNESS 90
 
 bool waiting;
 unsigned long lastCommandTime;  //Last time received a message from the main controller
