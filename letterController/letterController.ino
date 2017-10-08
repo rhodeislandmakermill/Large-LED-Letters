@@ -12,11 +12,12 @@
 #include "FastLED.h"
 #include <Wire.h>
 
-#define ADDRESS 10 
-#define NUM_LEDS 60
+//LETTER R
+#define ADDRESS 11
+#define NUM_LEDS 315
 
-#define PIXEL_PIN 1
-#define BRIGHTNESS 90
+#define PIXEL_PIN 3
+#define BRIGHTNESS 95
 
 bool waiting;
 unsigned long lastCommandTime;  //Last time received a message from the main controller
