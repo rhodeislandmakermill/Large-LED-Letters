@@ -45,7 +45,7 @@
 
 unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, BLUE, PINK, PURPLE, OSMM_TEAL};
 int mode;
-int commandCode;
+int commandCode, lastCommandCode;
 bool executeCommand;
 int animationCode;
 int pause;
@@ -62,6 +62,8 @@ void setup() {
 	lastAnimation = 0;
 	pause = 10000;
 	executeCommand = false;
+	commandCode = 0;
+	lastCommandCode = 0;
 
 	//Check SWITCH to see if we should run demo
 	pinMode(SWITCH_PIN, INPUT);
@@ -109,7 +111,35 @@ int ledAction(String command) {
  *  Twitter mode runs animations based on commands from the Internet
  */
 void twitterMode() {
+	if( commandCode != lastCommandCode ) {
+		switch( commandCode ){
+			case 1:   //OSMM
+				break;
+			case 2:   //PRIDE
+				break;
+			case 3:   //Providence College (black and white)
+				break;
+			case 4:   //Brown University  (brown 0x663300 and red 0xCC0000)
+				break;
+			case 5:   //Johnson and Whales (blue and yellow)
+				break;
+			case 6:   //URI (light blue and dark blue)
+				break;
+			case 7:   //Rhode Island (dark blue and yellow)
+				break;
+			case 8:   //Pink
+				break;
+			case 9:   //Dream
+				break;
+			case 10:  //Pizza (red, white and green)
+				break;
+		}
+	} else {
+		//Add some sparkles to the current colors
+		
+	}
 
+	lastCommandCode = commandCode;
 }
 
 /**
