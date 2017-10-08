@@ -31,19 +31,30 @@
 
 #define NUM_COLORS 8
 
-#define RED 0xFF0000
+#define WHITE 0xFFFFFF
+#define RED 0xCC0000
 #define ORANGE 0xFF8000
 #define YELLOW 0xFFFF00
 #define GREEN 0x00FF00
 #define BLUE 0x0000FF
+#define DARKBLUE 0x004080
+#define LIGHTBLUE 0x66BBFF
 #define PINK 0xFF4040
 #define PURPLE 0x7000DD
-#define OSMM_TEAL 0x00FF80
+#define OSMM_TEAL 0x00EE70
+#define BROWN 0x663300
 
 #define DEMO_MODE 0
 #define TWITTER_MODE 1
 
-unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, BLUE, PINK, PURPLE, OSMM_TEAL};
+const unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, BLUE, PINK, PURPLE, OSMM_TEAL};
+const unsigned long rainbow[] = {RED, YELLOW, GREEN, BLUE, PURPLE};
+const unsigned long brownu[] = {BROWN, RED};
+const unsigned long johnsonwales[] = {BLUE, YELLOW};
+const unsigned long uri[] = {DARKBLUE, LIGHTBLUE};
+const unsigned long rhodeisland[] = {DARKBLUE, YELLOW, WHITE};
+const unsigned long pizza[] = {RED, GREEN, WHITE};
+
 int mode;
 int commandCode, lastCommandCode;
 bool executeCommand;
@@ -102,9 +113,6 @@ int ledAction(String command) {
 		} else {
 			return -1;
 		}
-
-
-
 }
 
 /**
