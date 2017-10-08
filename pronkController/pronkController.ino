@@ -136,7 +136,7 @@ void twitterMode() {
 		}
 	} else {
 		//Add some sparkles to the current colors
-		
+
 	}
 
 	lastCommandCode = commandCode;
@@ -154,13 +154,47 @@ void demoMode() {
 }
 
 /**
- *  Sends sign animations
+ *  Sends sign one color animation
+ *  sends all letters same, color, animation and duration, simultaneously
+ */
+void animateOneColor( unsigned long color, byte animationCode, byte duration) {
+	animateLetter( 0 , color, animationCode, duration );
+}
+
+/**
+ *  Sends sign two color animation
+ */
+void animateTwoColor( unsigned long colors[], byte animationCode, byte duration, int pause ) {
+	animateLetter( P_ADDRESS, colors[0], animationCode, duration );
+	animateLetter( O_ADDRESS, colors[0], animationCode, duration );
+	animateLetter( K_ADDRESS, colors[0], animationCode, duration );
+  if( pause > 0 ) { delay(pause); }
+  animateLetter( R_ADDRESS, colors[1], animationCode, duration );
+  animateLetter( N_ADDRESS, colors[1], animationCode, duration );
+}
+
+/**
+ *  Sends sign three color animations
+ */
+void animateThreeColor( unsigned long colors[], byte animationCode, byte duration, int pause ) {
+	animateLetter( P_ADDRESS, colors[0], animationCode, duration );
+  animateLetter( K_ADDRESS, colors[4], animationCode, duration );
+  if( pause > 0 ) { delay(pause); }
+  animateLetter( R_ADDRESS, colors[1], animationCode, duration );
+  animateLetter( N_ADDRESS, colors[3], animationCode, duration );
+	if( pause > 0 ) { delay(pause); }
+  animateLetter( O_ADDRESS, colors[2], animationCode, duration );
+}
+
+
+/**
+ *  Sends sign five color animation
  *  colors[] - array gives color for each letter.
  *  animationCode - a single animation for all letters.
  *  duration - how long the animation will last
  *  pause - sets delay between animating each letter.
  */
-void animateSign( unsigned long colors[], byte animationCode, byte duration, int pause ) {
+void animateFiveColor( unsigned long colors[], byte animationCode, byte duration, int pause ) {
   animateLetter( P_ADDRESS, colors[0], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
   animateLetter( R_ADDRESS, colors[1], animationCode, duration );
@@ -170,14 +204,6 @@ void animateSign( unsigned long colors[], byte animationCode, byte duration, int
   animateLetter( N_ADDRESS, colors[3], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
   animateLetter( K_ADDRESS, colors[4], animationCode, duration );
-}
-
-/**
- *  Sends sign animations
- *  sends all letters same, color, animation and duration, simultaneously
- */
-void animateSign( unsigned long color, byte animationCode, byte duration) {
-	animateLetter( 0 , color, animationCode, duration );
 }
 
 /**
