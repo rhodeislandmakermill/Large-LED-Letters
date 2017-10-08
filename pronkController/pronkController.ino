@@ -9,6 +9,8 @@
 // http://oceanstatemakermill.org
 //
 
+#define SWITCH_PIN D5
+
 #define NUM_LETTERS 5
 
 #define P_ADDRESS 10
@@ -46,19 +48,34 @@ int mode;
 int animationCode;
 int pause;
 unsigned long lastAnimation;
+boolean connectToCellular = false;
+
+// Requires manually turning on cellular connection
+SYSTEM_MODE(SEMI_AUTOMATIC);
+// Enable threading so network connection doesn't stop other functions
+SYSTEM_THREAD(ENABLED);
 
 void setup() {
-    mode = DEMO_MODE;
-		lastAnimation = 0;
-		pause = 10000;
+  mode = DEMO_MODE;
+	lastAnimation = 0;
+	pause = 10000;
 
-		Wire.begin();
+	pinMode(SWITCH_PIN, INPUT);
+	int buttonState = digitalRead(SWITCH_PIN);
+
+	if( buttonState == HIGH ) {
+		mode = TWITTER_MODE;
+		Particle.connect();
+	}
+
+	Wire.begin();
 }
 
 void loop() {
+
 	//Wait between running animation
 	if( millis() - lastAnimation > pause ) {
-		if( mode == TWITTER_MODE ) {
+		if( mode == TWITTER_MODE && Particle.connected()) {
 			twitterMode();
 		} else {
 		  demoMode();
