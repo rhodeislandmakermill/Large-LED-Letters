@@ -66,6 +66,7 @@ void setup() {
 	if( buttonState == HIGH ) {
 		mode = TWITTER_MODE;
 		Particle.connect();
+		Particle.function("led",ledAction);
 	}
 
 	Wire.begin();
@@ -82,6 +83,38 @@ void loop() {
 		}
 		lastAnimation = millis();
 	}
+}
+
+/**
+ *  Accept commands from the Internet.
+ */
+int ledAction(String command) {
+    if (command=="1") {
+
+    } else if (command=="2") {
+
+		} else if (command=="3") {
+
+		} else if (command=="4") {
+
+		} else if (command=="5") {
+
+		} else if (command=="6") {
+
+		} else if (command=="7") {
+
+		} else if (command=="8") {
+
+		} else if (command=="9") {
+
+		} else if (command=="10") {
+
+		} else {
+			//Couldn't find command
+			return -1;
+		}
+		//Success
+		return 1;
 }
 
 /**
@@ -123,7 +156,7 @@ void animateSign( unsigned long colors[], byte animationCode, byte duration, int
 
 /**
  *  Sends sign animations
- *  sends all letters same, color and animation, simultaneously
+ *  sends all letters same, color, animation and duration, simultaneously
  */
 void animateSign( unsigned long color, byte animationCode, byte duration) {
 	animateLetter( 0 , color, animationCode, duration );
