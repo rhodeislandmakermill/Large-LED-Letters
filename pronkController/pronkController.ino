@@ -45,10 +45,12 @@
 
 unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, BLUE, PINK, PURPLE, OSMM_TEAL};
 int mode;
+int commandCode;
+bool executeCommand;
 int animationCode;
 int pause;
 unsigned long lastAnimation;
-boolean connectToCellular = false;
+bool connectToCellular = false;
 
 // Requires manually turning on cellular connection
 SYSTEM_MODE(SEMI_AUTOMATIC);
@@ -59,7 +61,9 @@ void setup() {
   mode = DEMO_MODE;
 	lastAnimation = 0;
 	pause = 10000;
+	executeCommand = false;
 
+	//Check SWITCH to see if we should run demo
 	pinMode(SWITCH_PIN, INPUT);
 	int buttonState = digitalRead(SWITCH_PIN);
 
@@ -89,32 +93,16 @@ void loop() {
  *  Accept commands from the Internet.
  */
 int ledAction(String command) {
-    if (command=="1") {
-
-    } else if (command=="2") {
-
-		} else if (command=="3") {
-
-		} else if (command=="4") {
-
-		} else if (command=="5") {
-
-		} else if (command=="6") {
-
-		} else if (command=="7") {
-
-		} else if (command=="8") {
-
-		} else if (command=="9") {
-
-		} else if (command=="10") {
-
+		commandCode = command.toInt();
+		if( commandCode > 0 ) {
+			executeCommand = true;
+			return 1;
 		} else {
-			//Couldn't find command
 			return -1;
 		}
-		//Success
-		return 1;
+
+
+
 }
 
 /**
