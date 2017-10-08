@@ -122,24 +122,32 @@ void twitterMode() {
 	if( commandCode != lastCommandCode ) {
 		switch( commandCode ){
 			case 1:   //OSMM
+				animateOneColor( OSMM_TEAL, JUGGLE, 10);
 				break;
 			case 2:   //PRIDE
+				animateFiveColors( rainbow, RAINBOW, 10, 1000);
 				break;
 			case 3:   //Providence College (black and white)
 				break;
 			case 4:   //Brown University  (brown 0x663300 and red 0xCC0000)
+				animateTwoColors( brownu, FADE, 3, 500);
 				break;
 			case 5:   //Johnson and Whales (blue and yellow)
+				animateTwoColors( johnsonwales, FADE, 3, 500);
 				break;
 			case 6:   //URI (light blue and dark blue)
+				animateTwoColors( uri, FADE, 3, 500);
 				break;
-			case 7:   //Rhode Island (dark blue and yellow)
+			case 7:   //Rhode Island (dark blue, yellow and white)
+				animateThreeColors( rhodeisland, DANCE, 5, 500);
 				break;
 			case 8:   //Pink
+				animateOneColor( PINK, RANDOM, 10);
 				break;
 			case 9:   //Dream
 				break;
 			case 10:  //Pizza (red, white and green)
+				animateThreeColors( pizza, SLIDE, 5, 500);
 				break;
 		}
 	} else {
@@ -158,21 +166,21 @@ void demoMode() {
     unsigned long color = colors[index];
     animationCode = (animationCode + 1) % NUM_ANIMATIONS;
 
-    animateSign( color, animationCode, 4 );
+    animateOneColor( color, animationCode, 4 );
 }
 
 /**
  *  Sends sign one color animation
  *  sends all letters same, color, animation and duration, simultaneously
  */
-void animateOneColor( unsigned long color, byte animationCode, byte duration) {
+void animateOneColor( const unsigned long color, byte animationCode, byte duration) {
 	animateLetter( 0 , color, animationCode, duration );
 }
 
 /**
  *  Sends sign two color animation
  */
-void animateTwoColor( unsigned long colors[], byte animationCode, byte duration, int pause ) {
+void animateTwoColors( const unsigned long colors[], byte animationCode, byte duration, int pause ) {
 	animateLetter( P_ADDRESS, colors[0], animationCode, duration );
 	animateLetter( O_ADDRESS, colors[0], animationCode, duration );
 	animateLetter( K_ADDRESS, colors[0], animationCode, duration );
@@ -184,7 +192,7 @@ void animateTwoColor( unsigned long colors[], byte animationCode, byte duration,
 /**
  *  Sends sign three color animations
  */
-void animateThreeColor( unsigned long colors[], byte animationCode, byte duration, int pause ) {
+void animateThreeColors( const unsigned long colors[], byte animationCode, byte duration, int pause ) {
 	animateLetter( P_ADDRESS, colors[0], animationCode, duration );
   animateLetter( K_ADDRESS, colors[4], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
@@ -202,7 +210,7 @@ void animateThreeColor( unsigned long colors[], byte animationCode, byte duratio
  *  duration - how long the animation will last
  *  pause - sets delay between animating each letter.
  */
-void animateFiveColor( unsigned long colors[], byte animationCode, byte duration, int pause ) {
+void animateFiveColors( const unsigned long colors[], byte animationCode, byte duration, int pause ) {
   animateLetter( P_ADDRESS, colors[0], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
   animateLetter( R_ADDRESS, colors[1], animationCode, duration );
