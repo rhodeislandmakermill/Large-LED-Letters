@@ -9,7 +9,7 @@
 // http://oceanstatemakermill.org
 //
 
-#define SWITCH_PIN 4
+#define SWITCH_PIN D5
 
 #define NUM_LETTERS 5
 
