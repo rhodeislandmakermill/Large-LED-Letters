@@ -64,7 +64,7 @@ void setup() {
 	int buttonState = digitalRead(SWITCH_PIN);
 
 	if( buttonState == HIGH ) {
-		mode == TWITTER_MODE;
+		mode = TWITTER_MODE;
 		Particle.connect();
 	}
 
