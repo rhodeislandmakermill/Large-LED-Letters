@@ -39,7 +39,7 @@
 #define BLUE 0x0000FF
 #define DARKBLUE 0x004080
 #define LIGHTBLUE 0x66BBFF
-#define PINK 0xFF4040
+#define PINK 0xFF6060
 #define PURPLE 0x7000DD
 #define OSMM_TEAL 0x00EE70
 #define BROWN 0x663300
@@ -71,7 +71,7 @@ SYSTEM_THREAD(ENABLED);
 void setup() {
   mode = DEMO_MODE;
 	lastAnimation = 0;
-	pause = 10000;
+	pause = 0;
 	executeCommand = false;
 	commandCode = 0;
 	lastCommandCode = 0;
@@ -109,7 +109,7 @@ int ledAction(String command) {
 		commandCode = command.toInt();
 		if( commandCode > 0 ) {
 			executeCommand = true;
-			return 1;
+			return commandCode;
 		} else {
 			return -1;
 		}
