@@ -62,15 +62,10 @@ void setup() {
 	FastLED.setBrightness(BRIGHTNESS);
 	FastLED.show();
 		
-	//For random change
-//	for(int i = 0; i < NUM_LEDS; i++) {
-//		shuffledLEDs[i] = i;
-//	}
 	startAnimation = true;
 	waiting = true;
 	lastCommandTime = millis();
 	
-	//shuffle(shuffledLEDs, NUM_LEDS);
 	animationCode = 0;
 	
 	startAnimation = false;
@@ -88,7 +83,7 @@ void loop() {
 	if( startAnimation ) {
 		runAnimation( animationCode, currentColor, nextColor, duration );
 		currentColor = nextColor;
-		//startAnimation = false;
+		startAnimation = false;
 	} else {
 		fadeToward( currentColor, 64 );
 		FastLED.show();
@@ -123,9 +118,6 @@ void runAnimation( byte animation, CRGB current, CRGB next, unsigned long durati
 	case 3: 
 		dance( current, next, duration );
 		break;
-	case 2:
-//		randomOn( current, next, duration );
-//		break;
 	case 1:
 		slide( current, next, duration );
 		break;
@@ -231,23 +223,6 @@ void sparkle( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
 	}
 }
 
-
-/**
- *  Randomly change from current color to new color until all colors are changed
- *  Random numbers are stored for efficient... necessary?
- */
-//void randomOn( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
-//	int totalFrames = NUM_LEDS;
-//	int frameLength = milliseconds / totalFrames;
-//	for( int frame = 0; frame < totalFrames; frame++ ) {
-//		leds[ shuffledLEDs[frame] ] = endColor;
-//		FastLED.show();
-//		delay(frameLength);
-//	}
-//	shuffle(shuffledLEDs, NUM_LEDS);
-//}
-
-
 /**
  *  Dance between start and end color
  */
@@ -345,15 +320,15 @@ void lerpColor( CRGB startColor, CRGB endColor, byte fraction, CRGB* pixel ) {
 /**
  *  Shuffle an array
  */
-//void shuffle(int *a, int len) {
-//	int m = len;
-//	int index, temp;
-//	
-//	while(m > 0) {
-//		index = random( m-- );
-//		temp = a[m];
-//		a[m] = a[index];
-//		a[index] = temp;
-//	}  
-//}
+void shuffle(int *a, int len) {
+	int m = len;
+	int index, temp;
+	
+	while(m > 0) {
+		index = random( m-- );
+		temp = a[m];
+		a[m] = a[index];
+		a[index] = temp;
+	}  
+}
 
