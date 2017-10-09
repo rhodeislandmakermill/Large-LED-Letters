@@ -108,9 +108,9 @@ int ledAction(String command) {
 		commandCode = command.toInt();
 		if( commandCode > 0 ) {
 			executeCommand = true;
-			return commandCode;
+			return 1;
 		} else {
-			return -1;
+			return 0;
 		}
 }
 
