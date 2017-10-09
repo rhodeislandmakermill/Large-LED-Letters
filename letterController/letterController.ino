@@ -13,8 +13,8 @@
 #include <Wire.h>
 
 //LETTER P
-#define ADDRESS 10
-#define NUM_LEDS 249
+//#define ADDRESS 10
+//#define NUM_LEDS 249
 //LETTER R
 //#define ADDRESS 11
 //#define NUM_LEDS 315
@@ -25,10 +25,10 @@
 //#define ADDRESS 13
 //#define NUM_LEDS 343
 //LETTER K
-//#define ADDRESS 14
-//#define NUM_LEDS 200
+#define ADDRESS 14
+#define NUM_LEDS 263
 
-#define PIXEL_PIN 3
+#define PIXEL_PIN 1
 #define BRIGHTNESS 95
 
 bool waiting;
@@ -66,7 +66,7 @@ void setup() {
 //	for(int i = 0; i < NUM_LEDS; i++) {
 //		shuffledLEDs[i] = i;
 //	}
-	
+	startAnimation = true;
 	waiting = true;
 	lastCommandTime = millis();
 	
@@ -88,7 +88,7 @@ void loop() {
 	if( startAnimation ) {
 		runAnimation( animationCode, currentColor, nextColor, duration );
 		currentColor = nextColor;
-		startAnimation = false;
+		//startAnimation = false;
 	} else {
 		fadeToward( currentColor, 64 );
 		FastLED.show();
@@ -97,12 +97,12 @@ void loop() {
 
 	// If haven't heard anything from main controller 
 	// in 2 minutes set pixels to white.
-	if( millis() - lastCommandTime > 60000 * 2 && waiting ) {
-		nextColor = CRGB::White;
-		runAnimation( random(5), currentColor, nextColor, duration );
-		currentColor = nextColor;
-		waiting = false;
-	}
+//	if( millis() - lastCommandTime > 10000 && waiting ) {
+//		nextColor = CRGB::White;
+//		runAnimation( random(5), currentColor, nextColor, duration );
+//		currentColor = nextColor;
+//		waiting = false;
+//	}
 }
 
 
