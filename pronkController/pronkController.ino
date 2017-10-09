@@ -31,24 +31,37 @@
 
 #define NUM_COLORS 8
 
-#define RED 0xFF0000
+#define WHITE 0xFFFFFF
+#define RED 0xCC0000
 #define ORANGE 0xFF8000
 #define YELLOW 0xFFFF00
 #define GREEN 0x00FF00
 #define BLUE 0x0000FF
-#define PINK 0xFF4040
+#define DARKBLUE 0x004080
+#define LIGHTBLUE 0x66BBFF
+#define PINK 0xFF6060
 #define PURPLE 0x7000DD
-#define OSMM_TEAL 0x00FF80
+#define OSMM_TEAL 0x00EE70
+#define BROWN 0x663300
 
 #define DEMO_MODE 0
 #define TWITTER_MODE 1
 
-unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, BLUE, PINK, PURPLE, OSMM_TEAL};
+const unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, BLUE, PINK, PURPLE, OSMM_TEAL};
+const unsigned long rainbow[] = {RED, YELLOW, GREEN, BLUE, PURPLE};
+const unsigned long brownu[] = {BROWN, RED};
+const unsigned long johnsonwales[] = {BLUE, YELLOW};
+const unsigned long uri[] = {DARKBLUE, LIGHTBLUE};
+const unsigned long rhodeisland[] = {DARKBLUE, YELLOW, WHITE};
+const unsigned long pizza[] = {RED, GREEN, WHITE};
+
 int mode;
+int commandCode, lastCommandCode;
+bool executeCommand;
 int animationCode;
 int pause;
 unsigned long lastAnimation;
-boolean connectToCellular = false;
+bool connectToCellular = false;
 
 // Requires manually turning on cellular connection
 SYSTEM_MODE(SEMI_AUTOMATIC);
@@ -58,14 +71,19 @@ SYSTEM_THREAD(ENABLED);
 void setup() {
   mode = DEMO_MODE;
 	lastAnimation = 0;
-	pause = 10000;
+	pause = 0;
+	executeCommand = false;
+	commandCode = 0;
+	lastCommandCode = 0;
 
+	//Check SWITCH to see if we should run demo
 	pinMode(SWITCH_PIN, INPUT);
 	int buttonState = digitalRead(SWITCH_PIN);
 
 	if( buttonState == HIGH ) {
 		mode = TWITTER_MODE;
 		Particle.connect();
+		Particle.function("led",ledAction);
 	}
 
 	Wire.begin();
@@ -85,10 +103,59 @@ void loop() {
 }
 
 /**
+ *  Accept commands from the Internet.
+ */
+int ledAction(String command) {
+		commandCode = command.toInt();
+		if( commandCode > 0 ) {
+			executeCommand = true;
+			return commandCode;
+		} else {
+			return -1;
+		}
+}
+
+/**
  *  Twitter mode runs animations based on commands from the Internet
  */
 void twitterMode() {
+	if( commandCode != lastCommandCode ) {
+		switch( commandCode ){
+			case 1:   //OSMM
+				animateOneColor( OSMM_TEAL, JUGGLE, 10);
+				break;
+			case 2:   //PRIDE
+				animateFiveColors( rainbow, RAINBOW, 10, 1000);
+				break;
+			case 3:   //Providence College (black and white)
+				break;
+			case 4:   //Brown University  (brown 0x663300 and red 0xCC0000)
+				animateTwoColors( brownu, FADE, 3, 500);
+				break;
+			case 5:   //Johnson and Whales (blue and yellow)
+				animateTwoColors( johnsonwales, FADE, 3, 500);
+				break;
+			case 6:   //URI (light blue and dark blue)
+				animateTwoColors( uri, FADE, 3, 500);
+				break;
+			case 7:   //Rhode Island (dark blue, yellow and white)
+				animateThreeColors( rhodeisland, DANCE, 5, 500);
+				break;
+			case 8:   //Pink
+				animateOneColor( PINK, RANDOM, 10);
+				break;
+			case 9:   //Dream
+				break;
+			case 10:  //Pizza (red, white and green)
+				animateThreeColors( pizza, SLIDE, 5, 500);
+				break;
+		}
+	} else {
+		//Add some sparkles to the current colors
 
+	}
+
+	lastCommandCode = commandCode;
 }
 
 /**
@@ -99,17 +166,51 @@ void demoMode() {
     unsigned long color = colors[index];
     animationCode = (animationCode + 1) % NUM_ANIMATIONS;
 
-    animateSign( color, animationCode, 4 );
+    animateOneColor( color, animationCode, 4 );
 }
 
 /**
- *  Sends sign animations
+ *  Sends sign one color animation
+ *  sends all letters same, color, animation and duration, simultaneously
+ */
+void animateOneColor( const unsigned long color, byte animationCode, byte duration) {
+	animateLetter( 0 , color, animationCode, duration );
+}
+
+/**
+ *  Sends sign two color animation
+ */
+void animateTwoColors( const unsigned long colors[], byte animationCode, byte duration, int pause ) {
+	animateLetter( P_ADDRESS, colors[0], animationCode, duration );
+	animateLetter( O_ADDRESS, colors[0], animationCode, duration );
+	animateLetter( K_ADDRESS, colors[0], animationCode, duration );
+  if( pause > 0 ) { delay(pause); }
+  animateLetter( R_ADDRESS, colors[1], animationCode, duration );
+  animateLetter( N_ADDRESS, colors[1], animationCode, duration );
+}
+
+/**
+ *  Sends sign three color animations
+ */
+void animateThreeColors( const unsigned long colors[], byte animationCode, byte duration, int pause ) {
+	animateLetter( P_ADDRESS, colors[0], animationCode, duration );
+  animateLetter( K_ADDRESS, colors[4], animationCode, duration );
+  if( pause > 0 ) { delay(pause); }
+  animateLetter( R_ADDRESS, colors[1], animationCode, duration );
+  animateLetter( N_ADDRESS, colors[3], animationCode, duration );
+	if( pause > 0 ) { delay(pause); }
+  animateLetter( O_ADDRESS, colors[2], animationCode, duration );
+}
+
+
+/**
+ *  Sends sign five color animation
  *  colors[] - array gives color for each letter.
  *  animationCode - a single animation for all letters.
  *  duration - how long the animation will last
  *  pause - sets delay between animating each letter.
  */
-void animateSign( unsigned long colors[], byte animationCode, byte duration, int pause ) {
+void animateFiveColors( const unsigned long colors[], byte animationCode, byte duration, int pause ) {
   animateLetter( P_ADDRESS, colors[0], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
   animateLetter( R_ADDRESS, colors[1], animationCode, duration );
@@ -119,14 +220,6 @@ void animateSign( unsigned long colors[], byte animationCode, byte duration, int
   animateLetter( N_ADDRESS, colors[3], animationCode, duration );
   if( pause > 0 ) { delay(pause); }
   animateLetter( K_ADDRESS, colors[4], animationCode, duration );
-}
-
-/**
- *  Sends sign animations
- *  sends all letters same, color and animation, simultaneously
- */
-void animateSign( unsigned long color, byte animationCode, byte duration) {
-	animateLetter( 0 , color, animationCode, duration );
 }
 
 /**
