@@ -72,8 +72,7 @@ SYSTEM_THREAD(ENABLED);
 
 void setup() {
   mode = DEMO_MODE;
-	lastAnimation = 0;
-	pause = 0;
+	pause = 30000;
 	executeCommand = false;
 	commandCode = 0;
 	lastCommandCode = 0;
@@ -89,6 +88,7 @@ void setup() {
 	}
 
 	Wire.begin();
+	lastAnimation = millis();
 }
 
 void loop() {
@@ -99,6 +99,7 @@ void loop() {
 			twitterMode();
 		} else {
 		  demoMode();
+			pause = 10000;
 		}
 		lastAnimation = millis();
 	}
