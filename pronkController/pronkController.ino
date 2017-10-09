@@ -181,10 +181,6 @@ void twitterMode() {
 				pause = 30000;
 				break;
 			case 17:
-				animateOneColor( PURPLE, SLIDE, 10);
-				pause = 30000;
-				break;
-			case 17:
 				animateOneColor( GREEN, FADE, 10);
 				pause = 30000;
 				break;
