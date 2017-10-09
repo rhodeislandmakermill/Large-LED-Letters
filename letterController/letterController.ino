@@ -12,9 +12,21 @@
 #include "FastLED.h"
 #include <Wire.h>
 
+//LETTER P
+#define ADDRESS 10
+#define NUM_LEDS 249
 //LETTER R
-#define ADDRESS 11
-#define NUM_LEDS 315
+//#define ADDRESS 11
+//#define NUM_LEDS 315
+//LETTER O
+//#define ADDRESS 12
+//#define NUM_LEDS 294
+//LETTER N
+//#define ADDRESS 13
+//#define NUM_LEDS 343
+//LETTER K
+//#define ADDRESS 14
+//#define NUM_LEDS 200
 
 #define PIXEL_PIN 3
 #define BRIGHTNESS 95
@@ -22,7 +34,7 @@
 bool waiting;
 unsigned long lastCommandTime;  //Last time received a message from the main controller
 
-int shuffledLEDs[NUM_LEDS];
+//int shuffledLEDs[NUM_LEDS];
 
 int animationCode;
 CRGB leds[NUM_LEDS];
@@ -51,14 +63,14 @@ void setup() {
 	FastLED.show();
 		
 	//For random change
-	for(int i = 0; i < NUM_LEDS; i++) {
-		shuffledLEDs[i] = i;
-	}
+//	for(int i = 0; i < NUM_LEDS; i++) {
+//		shuffledLEDs[i] = i;
+//	}
 	
 	waiting = true;
 	lastCommandTime = millis();
 	
-	shuffle(shuffledLEDs, NUM_LEDS);
+	//shuffle(shuffledLEDs, NUM_LEDS);
 	animationCode = 0;
 	
 	startAnimation = false;
@@ -112,8 +124,8 @@ void runAnimation( byte animation, CRGB current, CRGB next, unsigned long durati
 		dance( current, next, duration );
 		break;
 	case 2:
-		randomOn( current, next, duration );
-		break;
+//		randomOn( current, next, duration );
+//		break;
 	case 1:
 		slide( current, next, duration );
 		break;
@@ -191,7 +203,7 @@ void juggle( unsigned long milliseconds  ) {
 void rainbow( unsigned long milliseconds ) {
 	int frameLength = 30;
 	int totalFrames = milliseconds / frameLength;
-	int hueOffset = 2;
+	int hueOffset = 3;
 	int hue = 0;
 	for( int frame = 0; frame < totalFrames; frame++ ) {
 		hue += hueOffset;
@@ -224,16 +236,16 @@ void sparkle( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
  *  Randomly change from current color to new color until all colors are changed
  *  Random numbers are stored for efficient... necessary?
  */
-void randomOn( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
-	int totalFrames = NUM_LEDS;
-	int frameLength = milliseconds / totalFrames;
-	for( int frame = 0; frame < totalFrames; frame++ ) {
-		leds[ shuffledLEDs[frame] ] = endColor;
-		FastLED.show();
-		delay(frameLength);
-	}
-	shuffle(shuffledLEDs, NUM_LEDS);
-}
+//void randomOn( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
+//	int totalFrames = NUM_LEDS;
+//	int frameLength = milliseconds / totalFrames;
+//	for( int frame = 0; frame < totalFrames; frame++ ) {
+//		leds[ shuffledLEDs[frame] ] = endColor;
+//		FastLED.show();
+//		delay(frameLength);
+//	}
+//	shuffle(shuffledLEDs, NUM_LEDS);
+//}
 
 
 /**
@@ -333,15 +345,15 @@ void lerpColor( CRGB startColor, CRGB endColor, byte fraction, CRGB* pixel ) {
 /**
  *  Shuffle an array
  */
-void shuffle(int *a, int len) {
-	int m = len;
-	int index, temp;
-	
-	while(m > 0) {
-		index = random( m-- );
-		temp = a[m];
-		a[m] = a[index];
-		a[index] = temp;
-	}  
-}
+//void shuffle(int *a, int len) {
+//	int m = len;
+//	int index, temp;
+//	
+//	while(m > 0) {
+//		index = random( m-- );
+//		temp = a[m];
+//		a[m] = a[index];
+//		a[index] = temp;
+//	}  
+//}
 
