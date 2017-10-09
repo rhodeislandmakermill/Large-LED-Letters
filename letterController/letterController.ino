@@ -12,12 +12,17 @@
 #include "FastLED.h"
 #include <Wire.h>
 
+
+#define PIXEL_PIN 0
+#define BRIGHTNESS 95
+
 //LETTER P
 //#define ADDRESS 10
 //#define NUM_LEDS 249
-//LETTER R
-//#define ADDRESS 11
-//#define NUM_LEDS 315
+//LETTER R  (PIN 0!!!!!!!!!!!!!!!!)
+#define ADDRESS 11
+#define NUM_LEDS 315
+#define PIXEL_PIN 0
 //LETTER O
 //#define ADDRESS 12
 //#define NUM_LEDS 294
@@ -25,11 +30,9 @@
 //#define ADDRESS 13
 //#define NUM_LEDS 343
 //LETTER K
-#define ADDRESS 14
-#define NUM_LEDS 263
+//#define ADDRESS 14
+//#define NUM_LEDS 263
 
-#define PIXEL_PIN 1
-#define BRIGHTNESS 95
 
 #define FADE 0
 #define SLIDE 1
@@ -38,6 +41,20 @@
 #define RAINBOW 5
 #define JUGGLE 6
 
+#define WHITE 0xFFFFFF
+#define RED 0xCC0000
+#define ORANGE 0xFF8000
+#define YELLOW 0xFFFF00
+#define GREEN 0x00FF00
+#define BLUE 0x0000FF
+#define DARKBLUE 0x004080
+#define LIGHTBLUE 0x66BBFF
+#define PINK 0xFF6060
+#define PURPLE 0x7000DD
+#define OSMM_TEAL 0x00EE70
+#define BROWN 0x663300
+
+const unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, DARKBLUE, PINK, PURPLE, OSMM_TEAL};
 
 bool waiting;
 unsigned long lastCommandTime;  //Last time received a message from the main controller
@@ -48,6 +65,7 @@ int animationCode;
 CRGB leds[NUM_LEDS];
 CRGB currentColor;
 CRGB nextColor;
+byte colorIndex;
 unsigned long duration;
 
 volatile bool startAnimation;
@@ -79,7 +97,8 @@ void setup() {
 	startAnimation = false;
 	animationCode = 0;
 	currentColor = CRGB::Black;
-	nextColor = CRGB::White;
+	nextColor = OSMM_TEAL;
+	colorIndex = 0;
 	duration = 4000;
 	
 	fadeBetween( currentColor, nextColor, 3000 );
@@ -103,6 +122,7 @@ void loop() {
 	// If haven't heard anything from main controller 
 	// in 2 minutes set pixels to white.
 //	if( millis() - lastCommandTime > 10000 && waiting ) {
+//		animationCode = (animationCode + 1) % 7;
 //		nextColor = CRGB::White;
 //		runAnimation( random(5), currentColor, nextColor, duration );
 //		currentColor = nextColor;
