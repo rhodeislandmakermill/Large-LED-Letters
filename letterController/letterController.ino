@@ -13,19 +13,19 @@
 #include <Wire.h>
 
 
-#define PIXEL_PIN 0
+#define PIXEL_PIN 1
 #define BRIGHTNESS 95
 
 //LETTER P
 //#define ADDRESS 10
 //#define NUM_LEDS 249
 //LETTER R  (PIN 0!!!!!!!!!!!!!!!!)
-#define ADDRESS 11
-#define NUM_LEDS 315
-#define PIXEL_PIN 0
+//#define ADDRESS 11
+//#define NUM_LEDS 315
+//#define PIXEL_PIN 0
 //LETTER O
-//#define ADDRESS 12
-//#define NUM_LEDS 294
+#define ADDRESS 12
+#define NUM_LEDS 294
 //LETTER N
 //#define ADDRESS 13
 //#define NUM_LEDS 343
@@ -121,10 +121,10 @@ void loop() {
 
 	// If haven't heard anything from main controller 
 	// in 2 minutes set pixels to white.
-//	if( millis() - lastCommandTime > 10000 && waiting ) {
-//		animationCode = (animationCode + 1) % 7;
-//		nextColor = CRGB::White;
-//		runAnimation( random(5), currentColor, nextColor, duration );
+//	if( millis() - lastCommandTime > 60000 && waiting ) {
+//		colorIndex = (colorIndex + 1) % 8;
+//		nextColor = colors[colorIndex];
+//		runAnimation( random(7), currentColor, nextColor, duration );
 //		currentColor = nextColor;
 //		waiting = false;
 //	}

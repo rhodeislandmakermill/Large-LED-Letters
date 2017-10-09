@@ -72,7 +72,7 @@ SYSTEM_THREAD(ENABLED);
 
 void setup() {
   mode = DEMO_MODE;
-	pause = 30000;
+	pause = 10000;
 	executeCommand = false;
 	commandCode = 0;
 	lastCommandCode = 0;
