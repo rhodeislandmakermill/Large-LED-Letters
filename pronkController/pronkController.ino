@@ -53,6 +53,9 @@ const unsigned long johnsonwales[] = {BLUE, YELLOW};
 const unsigned long uri[] = {DARKBLUE, LIGHTBLUE};
 const unsigned long rhodeisland[] = {DARKBLUE, YELLOW, WHITE};
 const unsigned long pizza[] = {RED, GREEN, WHITE};
+const unsigned long brazil[] = {GREEN, YELLOW, BLUE};
+const unsigned long unitystreetband[] = {GREEN, PURPLE};
+const unsigned long whatcheer[] = {RED, WHITE};
 
 int mode;
 int commandCode, lastCommandCode;
@@ -155,6 +158,48 @@ void twitterMode() {
 			case 10:  //Pizza (red, white and green)
 				animateThreeColors( pizza, SLIDE, 5, 500);
 				pause = 30000;
+				break;
+			case 11:
+			case 12: //Chaotic Noise Marching Corps
+				animateOneColor( BLUE, DANCE, 10);
+				pause = 30000;
+				break;
+			case 13: //Damas de Ferro (Rio, BRAZIL)
+				animateThreeColors( brazil, SLIDE, 10, 1000);
+				pause = 30000;
+				break;
+			case 14: //Dead Music Capital Band
+				animateOneColor( RED, DANCE, 10);
+				pause = 30000;
+				break;
+			case 15: //Drumadics Beat-N-Brass Band (Brooklyn, NY)
+				animateOneColor( YELLOW, SLIDE, 10);
+				pause = 30000;
+				break;
+			case 16:
+				animateOneColor( PURPLE, DANCE, 10);
+				pause = 30000;
+				break;
+			case 17:
+				animateOneColor( PURPLE, SLIDE, 10);
+				pause = 30000;
+				break;
+			case 17:
+				animateOneColor( GREEN, FADE, 10);
+				pause = 30000;
+				break;
+			case 18: //School of Honk (Somerville, MA)
+				animateOneColor( ORANGE, DANCE, 10);
+				pause = 30000;
+				break;
+			case 19:
+				animateTwoColors( unitystreetband, FADE, 10, 1000);
+				pause = 30000;
+				break;
+			case 20:
+				animateTwoColors( whatcheer, DANCE, 10, 1000);
+				pause = 30000;
+				break;
 				break;
 		}
 	} else {
