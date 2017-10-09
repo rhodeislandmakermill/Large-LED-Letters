@@ -23,7 +23,6 @@
 
 #define FADE 0
 #define SLIDE 1
-#define RANDOM 2
 #define DANCE 3
 #define SPARKLE 4
 #define RAINBOW 5
@@ -123,36 +122,45 @@ void twitterMode() {
 		switch( commandCode ){
 			case 1:   //OSMM
 				animateOneColor( OSMM_TEAL, JUGGLE, 10);
+				pause = 30000;
 				break;
 			case 2:   //PRIDE
 				animateFiveColors( rainbow, RAINBOW, 10, 1000);
+				pause = 30000;
 				break;
 			case 3:   //Providence College (black and white)
 				break;
 			case 4:   //Brown University  (brown 0x663300 and red 0xCC0000)
 				animateTwoColors( brownu, FADE, 3, 500);
+				pause = 30000;
 				break;
 			case 5:   //Johnson and Whales (blue and yellow)
 				animateTwoColors( johnsonwales, FADE, 3, 500);
+				pause = 30000;
 				break;
 			case 6:   //URI (light blue and dark blue)
 				animateTwoColors( uri, FADE, 3, 500);
+				pause = 30000;
 				break;
 			case 7:   //Rhode Island (dark blue, yellow and white)
-				animateThreeColors( rhodeisland, DANCE, 5, 500);
+				animateThreeColors( rhodeisland, SLIDE, 5, 500);
+				pause = 30000;
 				break;
 			case 8:   //Pink
-				animateOneColor( PINK, RANDOM, 10);
+				animateOneColor( PINK, DANCE, 10);
+				pause = 30000;
 				break;
 			case 9:   //Dream
 				break;
 			case 10:  //Pizza (red, white and green)
 				animateThreeColors( pizza, SLIDE, 5, 500);
+				pause = 30000;
 				break;
 		}
 	} else {
 		//Add some sparkles to the current colors
-
+		animateOneColor( WHITE, SPARKLE, 10);
+		pause = 10000;
 	}
 
 	lastCommandCode = commandCode;

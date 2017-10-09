@@ -31,6 +31,14 @@
 #define PIXEL_PIN 1
 #define BRIGHTNESS 95
 
+#define FADE 0
+#define SLIDE 1
+#define DANCE 3
+#define SPARKLE 4
+#define RAINBOW 5
+#define JUGGLE 6
+
+
 bool waiting;
 unsigned long lastCommandTime;  //Last time received a message from the main controller
 
@@ -82,7 +90,9 @@ void setup() {
 void loop() {
 	if( startAnimation ) {
 		runAnimation( animationCode, currentColor, nextColor, duration );
-		currentColor = nextColor;
+		if( animationCode != SPARKLE ) {
+			currentColor = nextColor;
+		}
 		startAnimation = false;
 	} else {
 		fadeToward( currentColor, 64 );
@@ -211,8 +221,11 @@ void rainbow( unsigned long milliseconds ) {
 void sparkle( CRGB startColor, CRGB endColor, unsigned long milliseconds ) {
 	int frameLength = 30;
 	int totalFrames = milliseconds / frameLength;
+
+	CRGB dimmed = startColor / 2;
+	
 	for( int frame = 0; frame < totalFrames; frame++ ) {
-		fadeToward( endColor, 32 );
+		fadeToward( dimmed, 32 );
 		
 		for( int i = 0; i < 3; i++) {
 			leds[ random16(NUM_LEDS) ] = CRGB::White;
