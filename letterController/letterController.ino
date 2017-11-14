@@ -130,7 +130,8 @@ void loop() {
 		nextColor = colors[colorIndex];
 		runAnimation( random(7), currentColor, nextColor, duration );
 		currentColor = nextColor;
-		waiting = false;
+		lastCommandTime = millis();
+		//waiting = false;
 	}
 }
 
