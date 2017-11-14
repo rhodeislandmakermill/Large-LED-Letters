@@ -54,7 +54,7 @@
 #define OSMM_TEAL 0x00EE70
 #define BROWN 0x663300
 
-const unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, DARKBLUE, PINK, PURPLE, OSMM_TEAL};
+const unsigned long colors[] = {RED, ORANGE, YELLOW, GREEN, DARKBLUE, PURPLE, OSMM_TEAL};
 
 bool waiting;
 unsigned long lastCommandTime;  //Last time received a message from the main controller
@@ -119,15 +119,19 @@ void loop() {
 		delay(80);
 	}
 
-	// If haven't heard anything from main controller 
-	// in 2 minutes set pixels to white.
-//	if( millis() - lastCommandTime > 60000 && waiting ) {
-//		colorIndex = (colorIndex + 1) % 8;
-//		nextColor = colors[colorIndex];
-//		runAnimation( random(7), currentColor, nextColor, duration );
-//		currentColor = nextColor;
-//		waiting = false;
-//	}
+	// If haven't heard anything from main controller in a while 
+	// pick a random color and animation
+	if( millis() - lastCommandTime > 20000 && waiting ) {
+		int newColor = 0;
+		do {
+			newColor = random(7);
+		} while( colorIndex == newColor );
+		colorIndex = newColor;
+		nextColor = colors[colorIndex];
+		runAnimation( random(7), currentColor, nextColor, duration );
+		currentColor = nextColor;
+		waiting = false;
+	}
 }
 
 
